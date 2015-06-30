@@ -1,0 +1,13 @@
+
+(1) helpful information about the avr virtual machin:
+        https://github.com/micropython/micropython
+            (note : we are more interested in the minimal content)
+        https://github.com/micropython/pyboard
+            (an alegant board runs micropython,maybe worth to learn)
+
+(2) blockly
+
+
+(3) pybluz
+
+
