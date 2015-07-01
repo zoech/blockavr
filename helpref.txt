@@ -9,5 +9,6 @@
 
 
 (3) pybluz
+        note the pin of bluetooth module is "1234"
 
 
