@@ -31,6 +31,9 @@
 <body>
   <table>
     <tr>
+      <button onclick="showCode()">code</button>
+    </tr>
+    <tr>
       <td id="blocklyArea">
       </td>
     </tr>
@@ -51,6 +54,8 @@
       <block type="action_turn_right_zz"></block>
     </category>
   </xml>
+
+  <script src = "zz_generator_bkf.js"></script>
   <script>
     var blocklyArea = document.getElementById('blocklyArea');
     var blocklyDiv = document.getElementById('blocklyDiv');
@@ -78,7 +83,8 @@
 
 //----------------------------------------------------
     function showCode() {
-      var code = zz.workspaceToCode(workspace);
+      var code = Blockly.Zz.workspaceToCode(workspace);
+      //var code = "shit";
       alert(code);
     }
 
