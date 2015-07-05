@@ -31,6 +31,7 @@
 <body>
   <table>
     <tr>
+      <button onclick="debug()">debug</button>
       <button onclick="showCode()">code</button>
     </tr>
     <tr>
@@ -46,6 +47,8 @@
       <block type="math_number_zz"></block>
       <block type="tmp_zz"></block>
     </category>
+    <category name="procedure" custom="PROCEDURE"></category>
+    <category name="variables" custom="VARIABLE"></category>
     <sep></sep>
     <category name="Action">
       <block type="action_move_forward_zz"></block>
@@ -55,7 +58,7 @@
     </category>
   </xml>
 
-  <script src = "zz_generator_bkf.js"></script>
+  <script src = "c_avr_generator.js"></script>
   <script>
     var blocklyArea = document.getElementById('blocklyArea');
     var blocklyDiv = document.getElementById('blocklyDiv');
@@ -83,11 +86,17 @@
 
 //----------------------------------------------------
     function showCode() {
-      var code = Blockly.Zz.workspaceToCode(workspace);
+      Blockly.C.DEBUG = 0;
+      var code = Blockly.C.workspaceToCode(workspace);
       //var code = "shit";
       alert(code);
     }
 
+    function debug(){
+      Blockly.C.DEBUG = 1;
+      var code = Blockly.C.workspaceToCode(workspace);
+      alert(code);
+    }
 
 //----------------------------------------------------
   </script>
