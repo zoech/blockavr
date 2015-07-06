@@ -1,32 +1,18 @@
-#include "vcode.h"
-#include "base.h"
+#include <avr/io.h>
+#include <util/delay.h>
+#include "def.h"
 
+@@@@@@@@@@@@@@@@@@@@
 
+/*
 int main(void){
-
-    unsigned char cmd[CMD_BYTES];
-
-    while(1){
-
-        if( /* online */ ){
-            /* read from bluetooth */
-        }
-        else{
-            /* read from eeprom */
-        }
-
-        /* switch case */
-        switch(cmd[CMD_BYTE]){
-            case LANG_SETVAR:
-                break;
-            /* ... */
-            default:
-                /* unkwnow CMD handle */
-                break;
-        }
-
-        if( /* online */ ){
-        /* send back excute imformation */
-        }
-    }
+  init();
+  while(1){
+    block();
+    PORTB = PORTB | (1<<1);
+    _delay_ms(10000);
+    PORTB = PORTB & ~(1<<1);
+  }
+  while(1);
 }
+*/
