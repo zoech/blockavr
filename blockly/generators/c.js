@@ -3,13 +3,38 @@ Blockly.C = new Blockly.Generator('C');
 Blockly.C.RESERVED_WORDS_ =
     'auto,const,double,float,int,short,struct,unsigned,break,continue,else,for,long,signed,switch,void,case,default,enum,goto,register,sizeof,typedef,volatile,char,do,extern,if,return,static,union,while,asm,dynamic_cast,namespace,reinterpret_cast,try,bool,explicit,new,static_cast,typeid,catch,false,operator,template,typename,class,friend,private,this,using,const_cast,inline,public,throw,virtual,delete,mutable,protected,true,wchar_t';
 
-
 Blockly.C.ORDER_ATOMIC = 0;
-Blockly.C.ORDER_ASSIGNMENT = 1;
-Blockly.C.ORDER_FUNCTION_CALL = 2;
-Blockly.C.ORDER_COMMA = 98;
+Blockly.C.ORDER_MEMBER = 1;                   // -> []
+Blockly.C.ORDER_LOGIC_NOT = 2;                // !
+Blockly.C.ORDER_SELF_ADDICTIVE = 2;           // ++ --
+Blockly.C.ORDER_BIT_REVERSE = 2;              // ~
+Blockly.C.ORDER_NUMBER_SIGN = 2;              // -
+Blockly.C.ORDER_POINTER_ADDRESS = 2;          // *ptr &ptr
+Blockly.C.ORDER_MULTIVE = 3;                  // * /
+Blockly.C.ORDER_MODULUS = 3;                  // %
+Blockly.C.ORDER_ADDITIVE = 4;                // + -
+Blockly.C.ORDER_BIT_SHIFT = 5;                // << >>
+Blockly.C.ORDER_LOGIC_GT = 6;                 // >
+Blockly.C.ORDER_LOGIC_LT = 6;                 // <
+Blockly.C.ORDER_LOGIC_GE = 6;                 // >=
+Blockly.C.ORDER_LOGIC_LE = 6;                 // <=
+Blockly.C.ORDER_LOGIC_EQ = 7;                 // ==
+Blockly.C.ORDER_LOGIC_NE = 7;                 // !=
+Blockly.C.ORDER_BIT_AND = 8;                  // &
+Blockly.C.ORDER_BIT_XOR = 9;                  // ^
+Blockly.C.ORDER_BIT_OR = 10;                  // |
+Blockly.C.ORDER_LOGIC_AND = 11;               // &&
+Blockly.C.ORDER_LOGIC_OR = 12;                // ||
+Blockly.C.ORDER_CONDITIONAL = 13;        // ?:
+Blockly.C.ORDER_ASSIGNMENT = 14;              // = += -= *= /= &= |= ...
+Blockly.C.ORDER_COMMA = 98;                   // ,
 Blockly.C.ORDER_NONE = 99;
 
+// use to determin whether put a block() function in the code of a block;
+// if Blockly.C.DEBUG == 1,then,the generated code for some blocks 
+// would have a block() function in the very begining;this block()
+// function is a death loop,and will break when a certain signal is
+// receaved; thus the step debug can be achieved;
 Blockly.C.DEBUG = 0;
 
 Blockly.C.init = function(workspace) {
@@ -67,121 +92,3 @@ Blockly.C.scrubNakedValue = function(line) {
   return line + ';\n';
 }
 
-//===========================================================
-// blocks generation
-Blockly.C['action_move_forward_zz'] = function(block) {
-  var arg = Blockly.C.valueToCode(block,'VALUE',Blockly.C.ORDER_NONE) || '0';
-//  var arg = '11';
-  var code = "move_forward( " + arg + " );\n";
-  if( Blockly.C.DEBUG == 1 ) {
-    code = 'block();\n' + code +'\n';
-  }
-  return code;
-}
-
-Blockly.C['action_move_backward_zz'] = function(block) {
-  var arg = Blockly.C.valueToCode(block,'VALUE',Blockly.C.ORDER_NONE) || '0';
-  var code = "move_backward( " + arg + " );\n";
-  if( Blockly.C.DEBUG == 1 ) {
-    code = 'block();\n' + code +'\n';
-  }
-  return code;
-}
-
-Blockly.C['action_turn_left_zz'] = function(block) {
-  var arg = Blockly.C.valueToCode(block,'VALUE',Blockly.C.ORDER_NONE) || '0';
-  var code = "turn_left( " + arg + " );\n";
-  if( Blockly.C.DEBUG == 1 ) {
-    code = 'block();\n' + code +'\n';
-  }
-  return code;
-}
-
-Blockly.C['action_turn_right_zz'] = function(block) {
-  var arg = Blockly.C.valueToCode(block,'VALUE',Blockly.C.ORDER_NONE) || '0';
-  var code = "turn_right( " + arg + " );\n";
-  if( Blockly.C.DEBUG == 1 ) {
-    code = 'block();\n' + code +'\n';
-  }
-  return code;
-}
-
-Blockly.C['math_number_zz'] = function(block){
-  var code = parseInt(block.getFieldValue('NUM'));
-  return [code,Blockly.C.ORDER_ATOMIC];
-}
-
-//-------------------------------------------------------------------
-// variable blocks translate acomplition
-Blockly.C['variables_get'] = function(block) {
-  // Variable getter.
-  var code = Blockly.C.variableDB_.getName(block.getFieldValue('VAR'),
-      Blockly.Variables.NAME_TYPE);
-  return [code, Blockly.C.ORDER_ATOMIC];
-};
-
-Blockly.C['variables_set'] = function(block) {
-  // Variable setter.
-  var argument0 = Blockly.C.valueToCode(block, 'VALUE',
-      Blockly.C.ORDER_ASSIGNMENT) || '0';
-  var varName = Blockly.C.variableDB_.getName(
-      block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
-  return varName + ' = ' + argument0 + ';\n';
-};
-
-//--------------------------------------------------------------------
-// procedure blocks translate acomplition
-Blockly.C['procedures_defreturn'] = function(block){
-
-  var funcName = Blockly.C.variableDB_.getName(block.getFieldValue('NAME'),Blockly.Procedures.NAME_TYPE);
-  var branch = Blockly.C.statementToCode(block, 'STACK');
-  
-  var returnValue = Blockly.C.valueToCode(block,'RETURN',Blockly.C.ORDER_NONE) || '0';
-  returnValue = '  return ' + returnValue + ';\n';
-  var args = [];
-  for (var x = 0; x < block.arguments_.length; x++) {
-    args[x] = 'int ' + Blockly.C.variableDB_.getName(block.arguments_[x],Blockly.Variables.NAME_TYPE);
-  }
-  var retype = 'int ';
-  if ( block.type == 'procedures_defnoreturn' ){
-    retype = 'void ';
-	returnValue = '';
-  }
-  var code = retype + funcName + '(' +args.join(', ') + '){\n' + branch + returnValue + '}';
-  var fdef = retype + funcName + '(' + args.join(', ') + ');\n';
-
-  code = Blockly.C.scrub_(block, code);
-  Blockly.C.funcProcedures_[funcName] = code;
-  Blockly.C.definitions_['functions'] += fdef;
- 
-//  Blockly.C.definitions_[funcName] = 'int '+ funcName + '(){}';
-  return null;
-}
-
-Blockly.C['procedures_defnoreturn'] = Blockly.C['procedures_defreturn'];
-
-Blockly.C['procedures_callreturn'] = function(block) {
-  // Call a procedure with a return value.
-  var funcName = Blockly.C.variableDB_.getName(
-      block.getFieldValue('NAME'), Blockly.Procedures.NAME_TYPE);
-  var args = [];
-  for (var x = 0; x < block.arguments_.length; x++) {
-    args[x] = Blockly.C.valueToCode(block, 'ARG' + x,
-        Blockly.C.ORDER_COMMA) || '0';
-  }
-  var code = funcName + '(' + args.join(', ') + ')';
-  return [code, Blockly.C.ORDER_FUNCTION_CALL];
-}
-
-Blockly.C['procedures_callnoreturn'] = function(block) {
-  // Call a procedure with no return value.
-  var funcName = Blockly.C.variableDB_.getName(
-      block.getFieldValue('NAME'), Blockly.Procedures.NAME_TYPE);
-  var args = [];
-  for (var x = 0; x < block.arguments_.length; x++) {
-    args[x] = Blockly.C.valueToCode(block, 'ARG' + x,
-        Blockly.C.ORDER_COMMA) || '0';
-  }
-  var code = funcName + '(' + args.join(', ') + ');\n';
-  return code;
-};

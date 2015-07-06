@@ -1,4 +1,14 @@
-Blockly.Blocks['action_move_forward_zz'] = {
+Blockly.Blocks['avr_action_init'] = {
+  init: function() {
+    //this.setColour(160);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.appendDummyInput()
+        .appendField('avr action init');
+  }
+};
+
+Blockly.Blocks['avr_action_move_forward'] = {
   init: function() {
     this.setColour(160);
     this.setPreviousStatement(true);
@@ -12,7 +22,7 @@ Blockly.Blocks['action_move_forward_zz'] = {
   }
 };
 
-Blockly.Blocks['action_move_backward_zz'] = {
+Blockly.Blocks['avr_action_move_backward'] = {
   init: function() {
     this.setColour(160);
     this.setPreviousStatement(true);
@@ -26,7 +36,7 @@ Blockly.Blocks['action_move_backward_zz'] = {
   }
 };
 
-Blockly.Blocks['action_turn_left_zz'] = {
+Blockly.Blocks['avr_action_turn_left'] = {
   init: function() {
     this.setColour(160);
     this.setPreviousStatement(true);
@@ -40,7 +50,7 @@ Blockly.Blocks['action_turn_left_zz'] = {
   }
 };
 
-Blockly.Blocks['action_turn_right_zz'] = {
+Blockly.Blocks['avr_action_turn_right'] = {
   init: function() {
     this.setColour(160);
     this.setPreviousStatement(true);
@@ -53,23 +63,3 @@ Blockly.Blocks['action_turn_right_zz'] = {
         .appendField('deg');
   }
 };
-
-Blockly.Blocks['math_number_zz'] = {
-  init: function() {
-    this.setColour(Blockly.Blocks.math.HUE);
-    this.appendDummyInput()
-        .appendField(new Blockly.FieldTextInput('0',
-        Blockly.FieldTextInput.numberValidator),'NUM');
-    this.setOutput(true,'Number');
-  }
-}
-
-Blockly.Blocks['tmp_zz'] = {
-  init: function() {
-    //this.setColour(Blockly.Blocks.math.HUE);
-    this.appendDummyInput()
-        .appendField(new Blockly.FieldTextInput('0',
-        Blockly.FieldTextInput.numberValidator),'NUM');
-    this.setOutput(true,'zz');
-  }
-}
