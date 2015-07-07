@@ -1,5 +1,5 @@
 PRG            = demo
-OBJ            = demo.o init.o block.o
+OBJ            = demo.o avr_action.o block.o core.a
 #MCU_TARGET     = at90s2313
 #MCU_TARGET     = at90s2333
 #MCU_TARGET     = at90s4414

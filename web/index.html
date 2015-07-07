@@ -30,12 +30,53 @@
   <script src="../blockly/msg/js/en.js"></script>
   <script src="../blockly/blocks/avr_actions.js"></script>
   <script src="../blockly/blocks/avr_misc.js"></script>
+
+  <script>
+    //----------------------------------------------------
+    function showCode() {
+      Blockly.C.DEBUG = 0;
+      var code = Blockly.C.workspaceToCode(workspace);
+      alert(code);
+    }
+
+    function debug(){
+      Blockly.C.DEBUG = 1;
+      var code = Blockly.C.workspaceToCode(workspace);
+      alert(code);
+    }
+
+    function download(){
+      Blockly.C.DEBUG = 1;
+      var code = Blockly.C.workspaceToCode(workspace);
+      var xmlhttp=new XMLHttpRequest();
+      xmlhttp.open("POST","/upload",false);
+      xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+      xmlhttp.send("code=" + encodeURIComponent(code));
+      alert(xmlhttp.responseText);
+    }
+
+    function up(){
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.open("POST","/stepa",false);
+      xmlhttp.send("code='a'");
+      //xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+      //xmlhttp.send("code=" + encodeURIComponent('a'));
+    }
+    function down(){
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.open("POST","/stepb",false);
+      xmlhttp.send("code='b'");
+    }
+  </script>
+
 </head>
 <body>
   <table>
     <tr>
-      <button onclick="debug()">debug</button>
+      <button onclick="download()">upload</button>
       <button onclick="showCode()">code</button>
+      <button onclick="up()">send a</button>
+      <button onclick="down()">send b</button>
     </tr>
     <tr>
       <td id="blocklyArea">
@@ -121,19 +162,6 @@
     };
     window.addEventListener('resize', onresize, false);
     onresize();
-
-//----------------------------------------------------
-    function showCode() {
-      Blockly.C.DEBUG = 0;
-      var code = Blockly.C.workspaceToCode(workspace);
-      alert(code);
-    }
-
-    function debug(){
-      Blockly.C.DEBUG = 1;
-      var code = Blockly.C.workspaceToCode(workspace);
-      alert(code);
-    }
 
 //----------------------------------------------------
   </script>

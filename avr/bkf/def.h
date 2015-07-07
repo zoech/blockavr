@@ -4,7 +4,4 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#define fosc	8000000
-#define baud	2100
-
 #endif

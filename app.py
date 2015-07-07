@@ -11,9 +11,19 @@ import subprocess
 
 from pprint import pprint
 
+#######################################################
+"""
+import lightblue as lbt
+addr = ('00:13:03:28:05:47',1)
+zz_sock = lbt.socket()
+zz_sock.connect(addr)
+"""
+#######################################################
+
 blocklydir = "%s/blockly" % curdir 
 webdir = "%s/web" % curdir
 rootdir = curdir
+avrpath = "%s/avr/" % curdir
 
 mimes = {
     '.html': 'text/html',
@@ -29,9 +39,8 @@ mimes = {
 webpages = ['/index.html', '/blocks.js', '/c_avr_generator.js', '/zz_generator_bkf.js', '/zz_generator.js']
 
 
-file_to_copy = ['build.sh', 'pins_arduino.c', 'pins_arduino.h', 'servo.c', 'servo.h', 'servo_asm.S', 'wiring.h', 'wiring_digital.c', 'avr-thread.h', 'libavr-thread.a']
-
-avrpath = "%s/avr/code/" % curdir 
+#file_to_copy = ['build.sh', 'pins_arduino.c', 'pins_arduino.h', 'servo.c', 'servo.h', 'servo_asm.S', 'wiring.h', 'wiring_digital.c', 'avr-thread.h', 'libavr-thread.a']
+file_to_copy = ['def.h','block.c','init.c','Makefile', 'avr_action.c'];
 
 dst = tempfile.mkdtemp('', 'blockly-avr-')
 
@@ -113,20 +122,34 @@ class MyHandler(BaseHTTPRequestHandler):
             self.send_error(404,'File Not Found: %s' % self.path)
     
     def upload(self, code):
+        """
         for file in file_to_copy:
             shutil.copyfile("%s/%s" % (avrpath, file), "%s/%s" % (dst, file))
 
-        input = open("%s/main_program.cpp" % (avrpath))
-        output = open("%s/main_program.cpp" % (dst), 'w')
+        input = open("%s/demo.c" % (avrpath))
+        output = open("%s/demo.c" % (dst), 'w')
         for s in input.xreadlines():
             output.write(s.replace('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', code))
         output.close()
-
-        return subprocess.check_output("bash %s/build.sh 2>&1; exit 0" % dst, shell=True)
-
+        """
+        zinput = open("%s/demo_example.c" % (avrpath))
+        output = open("%s/demo.c" % (avrpath), 'w')
+        for s in zinput.xreadlines():
+            output.write(s.replace('@@@@@@@@@@',code))
+        output.close()
+        return subprocess.check_output("bash %s/build.sh 2>&1; exit 0" % avrpath, shell=True)
+        #return subprocess.check_output("bash make -C %s 2>&1; bash make download -C %s 2>&1; exit 0" % (avrpath,avrpath), shell=True)
 
 
     def do_POST(self):
+    
+        if self.path == '/stepa':
+            zz_sock.send('a')
+            return
+        if self.path == '/stepb':
+            zz_sock.send('b')
+            return
+     
         if self.path == '/upload':
             ctype, pdict = cgi.parse_header(self.headers.getheader('content-type'))
             if ctype == 'application/x-www-form-urlencoded':
@@ -136,6 +159,7 @@ class MyHandler(BaseHTTPRequestHandler):
             self.send_response(200)
             self.end_headers()
             self.wfile.write(self.upload(code))
+    """
         if self.path == '/save':
             self.send_response(200)
             self.end_headers()
@@ -162,14 +186,16 @@ class MyHandler(BaseHTTPRequestHandler):
                 input = open("%s/%s" % (sketchbookdir, name))
                 self.wfile.write(input.read())
                 input.close()
-
+    """
 def main():
     try:
+        #zz_sock.send('b')
         server = HTTPServer(('', 8000), MyHandler)
         print 'started httpserver...'
         server.serve_forever()
     except KeyboardInterrupt:
         print '^C received, shutting down server'
+        #zz_sock.close()
         server.socket.close()
 
 if __name__ == '__main__':

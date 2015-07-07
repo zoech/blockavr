@@ -2,29 +2,7 @@
 #include <util/delay.h>
 #include "def.h"
 
-int main(void) {
-  block();
-  avr_action_init();
-
-  block();
-  avr_action_forward( 300 );
-
-  block();
-  avr_action_left( 90 );
-
-  block();
-  avr_action_right( 90 );
-
-  block();
-  avr_action_forward( 200 );
-
-  block();
-  avr_action_backward( 300 );
-
-
-  while(1);
-}
-
+@@@@@@@@@@
 
 /*
 int main(void){

@@ -1,7 +1,10 @@
 #include "def.h"
+#include "Arduino.h"
 void block(void){
-  while(1){
-    if( (PIND & (1<<4)) == 0 )
+  while(1)
+  {
+    if(Serial.available()){
       break;
+    }
   }
 }
