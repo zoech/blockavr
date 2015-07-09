@@ -3,9 +3,14 @@
 #define __BLOCK_DEBUG
 #include "def.h"
 
+/* codes the down machine would recieve */
 #define NEXT_STEP        's'
 #define GET_VAR          'v'
 #define GET_REG          'r'
+
+/* codes the up machine would recieve */
+#define CODE_UNKNOW      "N/A"
+#define HEAVY_LATENCY    "L/T"
 
 #ifdef __cplusplus
 extern "C" {
@@ -13,6 +18,21 @@ extern "C" {
 
 void debug_init(long baud){
   Serial.begin(baud);
+  while(1){
+    /* NOTE the first time come here,this write means nothing.
+     * it's used to send back "bad code" when the below read()
+     * don't meat their demanding byte and enter next turn 
+     * using continue */
+    Serial.write(CODE_UNKNOW);
+    while(!Serial.available());
+    if (Serial.read() != 'D') continue;
+    if (Serial.read() != 'E') continue;
+    if (Serial.read() != 'B') continue;
+    if (Serial.read() != 'U') continue;
+    if (Serial.read() != 'G') continue;
+
+    break;
+  }
 }
 
 void block(char* id){
@@ -31,16 +51,19 @@ void block(char* id){
 
 
       /* the command only depend on the first "code" byte
-	   * should play above. the following case would use
-	   * the second comming byte "para". */
+       * should play above. the following case would use
+       * the second comming byte "para". */
 
       /*****************************************************/
 
       //while( !Serial.available() );
       para = Serial.read();
-	  /* if no following comming byte, we simply treat
-	   * it as transport error and ignore it. */
-      if (para == -1) continue;
+      /* if no following comming byte, we simply treat
+       * it as transport error and ignore it. */
+      if (para == -1) {
+        Serial.write(HEAVY_LATENCY);
+        continue;
+      }
 
       switch(code){
         case GET_VAR:
@@ -51,6 +74,7 @@ void block(char* id){
           break;
 
         default:
+          Serial.write(CODE_UNKNOW);
           break;
       } /* end of switch */
     } /* end of if(Serial.available()) */

@@ -87,9 +87,10 @@ Blockly.C.finish = function(code) {
   }
   code = 'int main(void) {\n\n' + Blockly.C.prefixLines('arduino_init();\n',Blockly.C.INDENT) + '\n' + code;
 
-  code = definitions.join('\n\n') + '\n' + code + '\n\n\n' + funcProcedures.join('\n\n');
+  code = '#include "def.h"\n' + definitions.join('\n\n') + '\n' + code + '\n\n\n' + funcProcedures.join('\n\n');
   if (Blockly.C.DEBUG == 1) {
-    code = 'int *' + varpointer + '[' + debug_var_trace + '];\n\n' + code;
+    //code = 'int *' + varpointer + '[' + debug_var_trace + '];\n\n' + code;
+	code = '#define __BLOCK_DEBUG\n' + code;
   }
 
   return code;
