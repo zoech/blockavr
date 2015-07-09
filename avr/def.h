@@ -13,12 +13,16 @@ extern "C" {
 
 // Weak empty variant initialization function.
 // May be redefined by variant files.
-void initVariant() __attribute__((weak));
-void initVariant() { }
+extern void initVariant() __attribute__((weak));
+extern void initVariant() { }
 
-void arduino_init();
+extern void arduino_init();
 
-void debug_init(long baud);
+#ifdef __BLOCK_DEBUG
+extern void debug_init(long baud);
+extern void block(char *id);
+extern int *var_p[16];
+#endif
 
 #ifdef __cplusplus
 } // end of extern "C"

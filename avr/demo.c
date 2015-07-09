@@ -6,6 +6,9 @@ int main(void) {
   arduino_init();
   debug_init(19200);
 
+  while(!Serial.available());
+  while(Serial.read() != -1);
+
   DDRB |= 1<<5;
   while(1){
     block("2");

@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-void arduino_init(){
+extern void arduino_init(){
   init();
   initVariant();
 

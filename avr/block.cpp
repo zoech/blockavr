@@ -1,5 +1,8 @@
 #include "Arduino.h"
 
+#define __BLOCK_DEBUG
+#include "def.h"
+
 #define NEXT_STEP        's'
 #define GET_VAR          'v'
 #define GET_REG          'r'
