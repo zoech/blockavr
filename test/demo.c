@@ -1,31 +1,37 @@
-#include <avr/io.h>
-#include <util/delay.h>
+//#include <avr/io.h>
+//#include <util/delay.h>
+//#include "def.h"
+#include "Arduino.h"
 #include "def.h"
 
+void block();
+void searial_begin(int baud);
+
+//extern void block();
+
 int main(void) {
-/*
-  block();
-  avr_action_init();
 
-  block();
-  avr_action_forward( 300 );
-
-  block();
-  avr_action_left( 90 );
-
-  block();
-  avr_action_right( 90 );
-
-  block();
-  avr_action_forward( 200 );
-
-  block();
-  avr_action_backward( 300 );
-*/
   arduino_init();
   serial_begin(19200);
-  block();
 
+  DDRB |= 1<<5;
+  PORTB |= (1<<5);
+
+//  Serial.begin(19200);
+
+  block();
+/*
+//  char c;
+  while(1){
+    //Serial.println(c);
+	PORTB &= ~(1<<5);
+    Serial.println("a");
+    delay(500);
+	PORTB |= (1<<5);
+    Serial.println("b");
+	delay(500);
+  }
+*/
   while(1);
 }
 
