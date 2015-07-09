@@ -39,7 +39,9 @@ Blockly.C.DEBUG = 0;
 
 Blockly.C.init = function(workspace) {
   Blockly.C.definitions_ = Object.create(null);
-  Blockly.C.functionNames_ = Object.create(null);
+  //Blockly.C.functionNames_ = Object.create(null);
+  Blockly.C.funcProcedures_ = Object.create(null);
+  Blockly.C.variables_ = [];
 
   if(!Blockly.C.variableDB_) {
     Blockly.C.variableDB_ =
@@ -51,18 +53,18 @@ Blockly.C.init = function(workspace) {
   var defvars = [];
   var variables = Blockly.Variables.allVariables(workspace);
   for (var x = 0;x < variables.length;x++) {
-    defvars[x] = 'int ' + Blockly.C.variableDB_.getName(variables[x],
-	                      Blockly.Variables.NAME_TYPE) + ' = 0;';
+    Blockly.C.variables_[x] = Blockly.C.variableDB_.getName(variables[x],Blockly.Variables.NAME_TYPE);
+    defvars[x] = 'int ' + Blockly.C.variables_[x] + ' = 0;';
   }
 
   Blockly.C.definitions_['variables'] = defvars.join('\n');
   Blockly.C.definitions_['functions'] = '';
-  Blockly.C.funcProcedures_ = Object.create(null);
 }
 
 //-------------------------------------------------------------------
 // finishlize
 Blockly.C.finish = function(code) {
+  var debug_var_trace = 16;
   var definitions = [];
   for (var name in Blockly.C.definitions_) {
     definitions.push(Blockly.C.definitions_[name]);
@@ -71,9 +73,26 @@ Blockly.C.finish = function(code) {
   for (var name in Blockly.C.funcProcedures_) {
     funcProcedures.push(Blockly.C.funcProcedures_[name]);
   }
+  var var_debug_bind = [];
+  var varpointer = 'var_p';
+  for (var x = 0;x < Blockly.C.variables_.length && x < debug_var_trace;x++){
+    var bind = varpointer + '[' + x + '] = &' + Blockly.C.variables_[x] + ';\n';
+	var_debug_bind.push(bind);
+  }
 
-  code = 'int main(void) {\n' + Blockly.C.prefixLines(code,Blockly.C.INDENT) + Blockly.C.prefixLines('\nwhile(1);\n',Blockly.C.INDENT) + '}';
-  return definitions.join('\n\n') + '\n' + code + '\n\n\n' + funcProcedures.join('\n\n');
+  code = Blockly.C.prefixLines(code,Blockly.C.INDENT) + Blockly.C.prefixLines('\nwhile(1);\n',Blockly.C.INDENT) + '}';
+  if (Blockly.C.DEBUG == 1) {
+    code = Blockly.C.prefixLines(var_debug_bind.join(''),Blockly.C.INDENT) + 
+                     Blockly.C.prefixLines('debug_init(19200);\n\n',Blockly.C.INDENT) + code;
+  }
+  code = 'int main(void) {\n\n' + Blockly.C.prefixLines('arduino_init();\n',Blockly.C.INDENT) + '\n' + code;
+
+  code = definitions.join('\n\n') + '\n' + code + '\n\n\n' + funcProcedures.join('\n\n');
+  if (Blockly.C.DEBUG == 1) {
+    code = 'int *' + varpointer + '[' + debug_var_trace + '];\n\n' + code;
+  }
+
+  return code;
 }
 //--------------------------------------------------------------------
 
@@ -84,7 +103,7 @@ Blockly.C.scrub_ = function(block,code) {
   var nextCode = Blockly.C.blockToCode(nextBlock);
 
   // for each statement,we used block() to accomplish step debug
-  var block_step = '// block() is the function to block program\nblock()\n';
+  //var block_step = '// block() is the function to block program\nblock()\n';
   return code + nextCode;
 }
 

@@ -18,6 +18,8 @@ void initVariant() { }
 
 void arduino_init();
 
+void debug_init(long baud);
+
 #ifdef __cplusplus
 } // end of extern "C"
 #endif

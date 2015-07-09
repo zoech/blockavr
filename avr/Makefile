@@ -1,5 +1,5 @@
 PRG            = demo
-OBJ            = demo.o block.o arduino_init.o#avr_action.o block.o
+OBJ            = demo.o block.o arduino_init.o avr_action.o
 ARDUINO_LIBS   = lib/libard.a
 
 MCU_TARGET     = atmega8

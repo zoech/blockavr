@@ -34,8 +34,9 @@
   <script>
     //----------------------------------------------------
     function showCode() {
-      Blockly.C.DEBUG = 0;
-      Blockly.C.STATEMENT_PREFIX = "debug(%1);\n";
+      Blockly.C.DEBUG = 1;
+      Blockly.C.STATEMENT_PREFIX = "\nblock(%1);\n";
+      Blockly.C.STATEMENT_PREFIX.replace("'",'"');
       var code = Blockly.C.workspaceToCode(workspace);
       alert(code);
     }

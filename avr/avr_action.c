@@ -1,7 +1,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#define F_CPU 8000000
+//#define F_CPU 8000000
 
 // MoTor direction _$(Left|Right)MT_$(Forward|Backward)
 #define AVR_ACTION_LMT_F (PORTD = PORTD | (1<<7))
