@@ -3,6 +3,7 @@
 
 Blockly.C['avr_action_init'] = function(block) {
   var code = "avr_action_init();\n";
+  //code += this.id;
   if( Blockly.C.DEBUG == 1 ) {
     code = 'block();\n' + code +'\n';
   }
