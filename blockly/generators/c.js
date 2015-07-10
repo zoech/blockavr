@@ -76,13 +76,13 @@ Blockly.C.finish = function(code) {
   var var_debug_bind = [];
   var varpointer = 'var_p';
   for (var x = 0;x < Blockly.C.variables_.length && x < debug_var_trace;x++){
-    var bind = varpointer + '[' + x + '] = &' + Blockly.C.variables_[x] + ';\n';
+    var bind = varpointer + '[' + x + '] = &' + Blockly.C.variables_[x] + ';';
 	var_debug_bind.push(bind);
   }
 
   code = Blockly.C.prefixLines(code,Blockly.C.INDENT) + Blockly.C.prefixLines('\nwhile(1);\n',Blockly.C.INDENT) + '}';
   if (Blockly.C.DEBUG == 1) {
-    code = Blockly.C.prefixLines(var_debug_bind.join(''),Blockly.C.INDENT) + 
+    code = Blockly.C.prefixLines(var_debug_bind.join('\n'),Blockly.C.INDENT) + 
                      Blockly.C.prefixLines('debug_init(19200);\n\n',Blockly.C.INDENT) + code;
   }
   code = 'int main(void) {\n\n' + Blockly.C.prefixLines('arduino_init();\n',Blockly.C.INDENT) + '\n' + code;

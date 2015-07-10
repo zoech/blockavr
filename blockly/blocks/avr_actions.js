@@ -63,3 +63,17 @@ Blockly.Blocks['avr_action_turn_right'] = {
         .appendField('deg');
   }
 };
+
+Blockly.Blocks['avr_action_blink'] = {
+  init: function() {
+    this.setColour(160);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.appendDummyInput()
+        .appendField('blink');
+    this.appendValueInput('VALUE')
+        .setCheck('Number');
+    this.appendDummyInput()
+        .appendField('times');
+  }
+};

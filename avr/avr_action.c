@@ -1,6 +1,8 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
+#include "Arduino.h"
+
 //#define F_CPU 8000000
 
 // MoTor direction _$(Left|Right)MT_$(Forward|Backward)
@@ -73,4 +75,15 @@ void avr_action_right(int deg){
   action_delay(deg*50);
   AVR_ACTION_LMT_D;
   AVR_ACTION_RMT_D;
+}
+
+void avr_action_blink(int times){
+  DDRB |= 1<<5;
+  int i = 0;
+  for(; i < times; ++i){
+    PORTB |= 1<<5;
+    delay(200);
+    PORTB &= ~(1<<5);
+    delay(200);
+  }
 }

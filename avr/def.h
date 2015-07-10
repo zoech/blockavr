@@ -1,8 +1,5 @@
 #ifndef __BLOCKAVR_DEF_H
-#define  _BLOCKAVR_DEF_H
-
-
-#include "Arduino.h"
+#define __BLOCKAVR_DEF_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -21,11 +18,13 @@ extern void arduino_init();
 #ifdef __BLOCK_DEBUG
 extern void debug_init(long baud);
 extern void block(char *id);
-extern int *var_p[16];
+int *var_p[16];
 #endif
 
 #ifdef __cplusplus
 } // end of extern "C"
 #endif
+
+#include "Arduino.h"
 
 #endif

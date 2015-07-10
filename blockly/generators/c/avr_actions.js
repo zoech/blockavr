@@ -34,3 +34,9 @@ Blockly.C['avr_action_turn_right'] = function(block) {
   var code = "avr_action_right( " + arg + " );\n";
   return code;
 }
+
+Blockly.C['avr_action_blink'] = function(block) {
+  var arg = Blockly.C.valueToCode(block,'VALUE',Blockly.C.ORDER_NONE) || '1';
+  var code = "avr_action_blink( " + arg + " );\n";
+  return code;
+}

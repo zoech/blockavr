@@ -1,10 +1,38 @@
-//#include <avr/io.h>
-//#include <util/delay.h>
-#include "Arduino.h"
+#define __BLOCK_DEBUG
 #include "def.h"
 
-@@@@@@@@@@
+static void blink(int times);
+int main(void) {
 
+  arduino_init();
+  debug_init(19200);
+
+  //while(!Serial.available());
+  //while(Serial.read() != -1);
+
+  DDRB |= 1<<5;
+  while(1){
+    block("2");
+    blink(2);
+
+    block("250");
+    blink(5);
+
+    block("666");
+    blink(1);
+  }
+  while(1);
+}
+
+static void blink(int times){
+  int i = 0;
+  for(; i < times; ++i){
+    PORTB |= 1<<5;
+    delay(300);
+    PORTB &= ~(1<<5);
+    delay(300);
+  }
+}
 /*
 int main(void){
 

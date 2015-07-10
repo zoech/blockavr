@@ -13,8 +13,6 @@ LIBS           = $(ARDUINO_LIBS) -L./lib -lm
 
 CC             = avr-gcc
 XX             = avr-g++
-#CC             = /usr/share/arduino/hardware/tools/avr/bin/avr-gcc
-#XX             = /usr/share/arduino/hardware/tools/avr/bin/avr-g++
 
 # Override is only needed by avr-lib build system.
 
@@ -25,13 +23,18 @@ LDFLAGS        = -w -Os -mmcu=$(MCU_TARGET) -Wl,--gc-sections
 
 OBJCOPY        = avr-objcopy
 OBJDUMP        = avr-objdump
-#OBJCOPY        = /usr/share/arduino/hardware/tools/avr/bin/avr-objcopy
+
+RESET            = 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz'
 
 all: $(PRG).elf lst text eeprom
 
+bluedown: $(PRG).hex
+	#avrdude -p atmega8 -c arduino -b 19200 -P /dev/ttyUSB0 -e -U flash:w:$^
+	avrdude -v -patmega8 -carduino -P/dev/rfcomm0 -b19200 -D -Uflash:w:$^:i & echo $(RESET) > /rfcomm0
+
 download: $(PRG).hex
 	#avrdude -p atmega8 -c arduino -b 19200 -P /dev/ttyUSB0 -e -U flash:w:$^
-	avrdude -v -patmega8 -carduino -P/dev/rfcomm0 -b19200 -D -Uflash:w:$^:i
+	avrdude -v -patmega8 -carduino -P/dev/ttyUSB0 -b19200 -D -Uflash:w:$^:i
 
 $(PRG).elf: $(OBJ) $(ARDUINO_LIBS)
 	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
