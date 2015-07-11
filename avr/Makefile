@@ -30,7 +30,7 @@ all: $(PRG).elf lst text eeprom
 
 bluedown: $(PRG).hex
 	#avrdude -p atmega8 -c arduino -b 19200 -P /dev/ttyUSB0 -e -U flash:w:$^
-	avrdude -v -patmega8 -carduino -P/dev/rfcomm0 -b19200 -D -Uflash:w:$^:i & echo $(RESET) > /rfcomm0
+	echo 'z' > /dev/rfcomm0;avrdude -v -patmega8 -carduino -P/dev/rfcomm0 -b19200 -D -Uflash:w:$^:i
 
 download: $(PRG).hex
 	#avrdude -p atmega8 -c arduino -b 19200 -P /dev/ttyUSB0 -e -U flash:w:$^

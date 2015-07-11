@@ -11,7 +11,7 @@ int main(void) {
 
 
   block("7");
-  avr_action_blink( 3 );
+  avr_action_blink( 8 );
 
   block("14");
   avr_action_blink( 2 );
