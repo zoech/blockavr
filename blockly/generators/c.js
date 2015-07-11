@@ -80,10 +80,10 @@ Blockly.C.finish = function(code) {
 	var_debug_bind.push(bind);
   }
 
-  code = Blockly.C.prefixLines(code,Blockly.C.INDENT) + Blockly.C.prefixLines('\nwhile(1);\n',Blockly.C.INDENT) + '}';
+  code = Blockly.C.prefixLines(code,Blockly.C.INDENT) + Blockly.C.prefixLines('\nblock_end();\n',Blockly.C.INDENT) + '}';
   if (Blockly.C.DEBUG == 1) {
     code = Blockly.C.prefixLines(var_debug_bind.join('\n'),Blockly.C.INDENT) + 
-                     Blockly.C.prefixLines('debug_init(19200);\n\n',Blockly.C.INDENT) + code;
+                     Blockly.C.prefixLines('\ndebug_init(19200);\n\n',Blockly.C.INDENT) + code;
   }
   code = 'int main(void) {\n\n' + Blockly.C.prefixLines('arduino_init();\n',Blockly.C.INDENT) + '\n' + code;
 

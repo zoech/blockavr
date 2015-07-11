@@ -58,10 +58,12 @@ file_to_copy = ['def.h','block.cpp','arduino_init.cpp','Makefile', 'avr_action.c
 dst = tempfile.mkdtemp('', 'blockly-avr-')
 
 sketchbookdir = os.path.expanduser('~/blockly-sketchbook')
+"""
 try:
     os.mkdir(sketchbookdir)
 except OSError:
     pass
+"""
 
 def build_file_list():
     global sketchbookdir

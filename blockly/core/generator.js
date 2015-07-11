@@ -167,7 +167,7 @@ Blockly.Generator.prototype.blockToCode = function(block) {
     return [this.scrub_(block, code[0]), code[1]];
   } else if (goog.isString(code)) {
     if (this.STATEMENT_PREFIX) {
-      code = this.STATEMENT_PREFIX.replace(/%1/g, '\'' + block.id + '\'') +
+      code = this.STATEMENT_PREFIX.replace(/%1/g, '"' + block.id + '"') +
           code;
     }
     return this.scrub_(block, code);
@@ -262,7 +262,7 @@ Blockly.Generator.prototype.addLoopTrap = function(branch, id) {
   }
   if (this.STATEMENT_PREFIX) {
     branch += this.prefixLines(this.STATEMENT_PREFIX.replace(/%1/g,
-        '\'' + id + '\''), this.INDENT);
+        '"' + id + '"'), this.INDENT);
   }
   return branch;
 };

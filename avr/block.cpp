@@ -74,7 +74,7 @@ void block(char* id){
       /*****************************************************/
 
       //while( !Serial.available() );
-      para = Serial.read();
+      while( (para = Serial.read()) == -1 );
       /* if no following comming byte, we simply treat
        * it as transport error and ignore it. */
       if (para == -1) {
@@ -88,6 +88,7 @@ void block(char* id){
           char c;
           c = (char)((*var_p[0]) & 0x000000ff);
           Serial.write(c);
+          Serial.write(RESPON_END);
           /* write value of required variable to the serial */
           break;
         case GET_REG:
@@ -104,8 +105,9 @@ void block(char* id){
 }
 
 void block_end(){
-  block(PRO_END);
-  while(1);
+  while(1) {
+    block(PRO_END);
+  }
 }
 
 #ifdef __cplusplus

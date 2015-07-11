@@ -1,26 +1,31 @@
 #define __BLOCK_DEBUG
 #include "def.h"
-
+int i = 0;
 
 
 int main(void) {
 
   arduino_init();
 
-    debug_init(19200);
+  var_p[0] = &i;
+  debug_init(19200);
 
 
-  block("7");
-  avr_action_blink( 8 );
+  block("42");
+  i = 3;
 
   block("14");
-  avr_action_blink( 2 );
+  int count;
+  for (count = 0; count < 3; count++) {
 
-  block("21");
-  avr_action_blink( 3 );
+    block("24");
+    avr_action_blink( 2 );
 
-  block("28");
-  avr_action_blink( 1 );
+    block("34");
+    avr_action_blink( i );
 
-  while(1);
+    block("14");
+  }
+
+  block_end();
 }

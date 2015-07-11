@@ -21,8 +21,8 @@ bt_sock = _bt.BluetoothSocket()
 #zz_sock.connect(addr)
 """
 
-seri_file = None
 filename = "/dev/rfcomm0"
+seri_file = open(filename,'w+')
 
 #######################################################
 
@@ -62,10 +62,12 @@ file_to_copy = ['def.h','block.cpp','arduino_init.cpp','Makefile', 'avr_action.c
 dst = tempfile.mkdtemp('', 'blockly-avr-')
 
 sketchbookdir = os.path.expanduser('~/blockly-sketchbook')
+"""
 try:
     os.mkdir(sketchbookdir)
 except OSError:
     pass
+"""
 
 def build_file_list():
     global sketchbookdir
@@ -87,7 +89,12 @@ def blue_init():
 """
 
 def read_respon():
-    recv = seri_file.readline()
+    recv = '';
+    while len(recv) == 0:
+        recv = seri_file.readline()
+    #recv = seri_file.readline()
+    while recv[-1] != RESPON_END:
+        recv = recv + seri_file.readline()
     return recv[:-1]
 
 class MyHandler(BaseHTTPRequestHandler):
