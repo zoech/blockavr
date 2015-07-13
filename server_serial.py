@@ -188,8 +188,7 @@ class MyHandler(BaseHTTPRequestHandler):
                 postvars = cgi.parse_qs(self.rfile.read(length), keep_blank_values=1)
                 num = postvars['num'][0]
             cnt = int(num)
-            num = cnt + 97
-            num = chr(num)
+            num = chr(cnt)
             seri_file.write(GET_VAR)
             seri_file.write(num)
 

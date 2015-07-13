@@ -25,33 +25,15 @@ extern "C" {
 
 void debug_init(long baud){
   Serial.begin(baud);
-  
-  while(1){
-    char c;
-    /* NOTE the first time come here,this write means nothing.
-     * it's used to send back "bad code" when the below read()
-     * don't meat their demanding byte and enter next turn 
-     * using continue */
-    //Serial.write(CODE_UNKNOW);
-    while(!Serial.available());
-    /*
-    if (Serial.read() != 'D') continue;
-    if (Serial.read() != 'E') continue;
-    if (Serial.read() != 'B') continue;
-    if (Serial.read() != 'U') continue;
-    if (Serial.read() != 'G') continue;
-    */
-
-    if ( (c = Serial.read()) == RESET )
-      debug_reset();
-    if (c == NEXT_STEP) break;
-  }
+  block(NULL);
 }
 
 void block(char* id){
   /* tell the upper machine where here is */
-  Serial.write(id);
-  Serial.write(RESPON_END);
+  if( id ){
+    Serial.write(id);
+    Serial.write(RESPON_END);
+  }
 
   /* block the process if no NEXT_STEP code in Serial.
    * and here in this while we may handle some extra 
@@ -79,7 +61,7 @@ void block(char* id){
       switch(code){
         case GET_VAR:
           int num;
-		  num = (int)(para - 'a');
+		  num = (int)para;
           int i;
           for(i = 0;i < num; ++i){
             char c;

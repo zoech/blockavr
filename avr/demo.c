@@ -1,42 +1,29 @@
 #define __BLOCK_DEBUG
 #include "def.h"
+int item = 0;
 int i = 0;
-int j = 0;
-int k = 0;
 
 
 int main(void) {
 
   arduino_init();
 
-  var_p[0] = &i;
-  var_p[1] = &j;
-  var_p[2] = &k;
+  var_p[0] = &item;
+  var_p[1] = &i;
   debug_init(19200);
 
 
-  block("3");
-  i = -4467;
+  block("5");
+  int count;
+  for (count = 0; count < 5; count++) {
 
-  block("6");
-  j = 0;
+    block("11");
+    item = item + 24;
 
-  block("9");
-  k = 66;
+    block("23");
+    i = i - 17;
 
-  block("25");
-  while (i < 0) {
-
-    block("77");
-    k = k - 3;
-
-    block("53");
-    j = k + 2;
-
-    block("105");
-    i = i + 1036;
-
-    block("25");
+    block("5");
   }
 
   block_end();

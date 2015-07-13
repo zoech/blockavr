@@ -67,9 +67,8 @@
       var text = '';
       var varlist = xmlhttp.responseText.split(",");
       for(var c = 0; c < num; c++){
-        text += Blockly.C.variables_[c] + "\t=\t" + varlist[c] + "\n";
+        text += Blockly.C.variables_[c] + "\t\t= " + varlist[c] + "\n";
       }
-      //alert(xmlhttp.responseText);
       alert(text);
     }
 
