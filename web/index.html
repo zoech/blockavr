@@ -59,11 +59,18 @@
     }
 
     function getvar(){
+      var num = Blockly.C.variables_.length;
       var xmlhttp=new XMLHttpRequest();
-      xmlhttp.open("POST","/getavr",false);
+      xmlhttp.open("POST","/getvar",false);
       xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-      xmlhttp.send("num=" + '3');
-      alert(xmlhttp.responseText);
+      xmlhttp.send("num=" + encodeURIComponent(num.toString()));
+      var text = '';
+      var varlist = xmlhttp.responseText.split(",");
+      for(var c = 0; c < num; c++){
+        text += Blockly.C.variables_[c] + "\t=\t" + varlist[c] + "\n";
+      }
+      //alert(xmlhttp.responseText);
+      alert(text);
     }
 
     function step(){
@@ -99,7 +106,7 @@
     <tr>
       <button onclick="showCode()">code</button>
       <button onclick="download()">upload</button>
-      <button onclick="getavr()">viewvar</button>
+      <button onclick="getvar()">viewvar</button>
       <button onclick="step()">step</button>
     </tr>
     <tr>

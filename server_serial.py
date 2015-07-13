@@ -86,6 +86,12 @@ def read_respon():
         recv = recv + seri_file.readline()
     return recv[:-1]
 
+def read_var(count):
+    recv = '';
+    while len(recv) < count*2 + 1:
+        recv = recv + seri_file.read()
+    return recv[:-1]
+
 class MyHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
@@ -187,16 +193,15 @@ class MyHandler(BaseHTTPRequestHandler):
             seri_file.write(GET_VAR)
             seri_file.write(num)
 
-            respon = read_respon()
-            respon = respon[:-1]
+            respon = read_var(cnt)
             respon = [ respon[2*i:2*i+2] for i in range(0,cnt) ]
-            for i in range(0,cnt)
+            for i in range(0,cnt):
                 b1 = ord(respon[i][0]) # byte 1
-                b2 = ord(respon[i][1]) # byte 0
-                respon[i] = b1*256+b2
-                if b1 > 127
+                b0 = ord(respon[i][1]) # byte 0
+                respon[i] = b1*256+b0
+                if b1 > 127:
                     respon[i] = '-' + str(256*256 - respon[i])
-                else
+                else:
                     respon[i] = str(respon[i])
             self.send_response(200)
             self.end_headers()
