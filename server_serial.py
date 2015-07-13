@@ -76,17 +76,6 @@ def build_file_list():
     for fname in dirList:
         list = list + '<li><a href="#" onclick="do_action(\'%s\'); return false;">%s</a></li>\n' % (fname, fname)
     return list
-"""
-def blue_init():
-    if not btmac in _bt.discover_devices():
-        print "mac address \"%s\" could not be discovered" % btmac
-        #exit()
-    try:
-        bt_sock.connect(btaddr)
-        bt_sock.settimeout(10)
-    except bluetooth.btcommon.BluetoothErorr:
-        print "bluetooth error"
-"""
 
 def read_respon():
     recv = '';
@@ -132,18 +121,6 @@ class MyHandler(BaseHTTPRequestHandler):
                 self.send_header("Location", '%s/index.html' % webdir)
                 self.end_headers()
                 return
-            """
-            if self.path in webpages:
-                filell,ext = os.path.splitext(self.path)
-                mime = mimes[ext]
-                f = open(webdir + sep + self.path)
-                self.send_response(200)
-                self.send_header('Content-type',mime)
-                self.end_headers()
-                self.wfile.write(f.read())
-                f.close()
-                return
-            """
 
             filell,ext = os.path.splitext(self.path)
             mime = mimes[ext]
@@ -165,10 +142,6 @@ class MyHandler(BaseHTTPRequestHandler):
     def download(self, code):
         #zinput = open("%s/demo_example.c" % (avrpath))
         output = open("%s/demo.c" % (avrpath), 'w')
-        """
-        for s in zinput.xreadlines():
-            output.write(s.replace('@@@@@@@@@@',code))
-        """
         output.write(code)
         output.close()
         return subprocess.check_output("bash %s/build.sh 2>&1; exit 0" % avrpath, shell=True)
@@ -202,39 +175,34 @@ class MyHandler(BaseHTTPRequestHandler):
             self.wfile.write(read_respon())
             return
 
-        """
-        if self.path == '/conn_blue':
-            blue_init();
-            return
-        """
-        """
-        if self.path == '/save':
-            self.send_response(200)
-            self.end_headers()
+        if self.path == '/getvar':
             ctype, pdict = cgi.parse_header(self.headers.getheader('content-type'))
             if ctype == 'application/x-www-form-urlencoded':
                 length = int(self.headers.getheader('content-length'))
                 postvars = cgi.parse_qs(self.rfile.read(length), keep_blank_values=1)
-                name = postvars['name'][0]
-                is_new = postvars['isNew'][0]
-                code = postvars['code'][0]
+                num = postvars['num'][0]
+            cnt = int(num)
+            num = cnt + 97
+            num = chr(num)
+            seri_file.write(GET_VAR)
+            seri_file.write(num)
 
-                output = open("%s/%s" % (sketchbookdir, name), 'w')
-                output.write(code)
-                output.close()
-                self.wfile.write("File %s is saved" % name)
-        if self.path == '/load':
+            respon = read_respon()
+            respon = respon[:-1]
+            respon = [ respon[2*i:2*i+2] for i in range(0,cnt) ]
+            for i in range(0,cnt)
+                b1 = ord(respon[i][0]) # byte 1
+                b2 = ord(respon[i][1]) # byte 0
+                respon[i] = b1*256+b2
+                if b1 > 127
+                    respon[i] = '-' + str(256*256 - respon[i])
+                else
+                    respon[i] = str(respon[i])
             self.send_response(200)
             self.end_headers()
-            ctype, pdict = cgi.parse_header(self.headers.getheader('content-type'))
-            if ctype == 'application/x-www-form-urlencoded':
-                length = int(self.headers.getheader('content-length'))
-                postvars = cgi.parse_qs(self.rfile.read(length), keep_blank_values=1)
-                name = postvars['name'][0]
-                input = open("%s/%s" % (sketchbookdir, name))
-                self.wfile.write(input.read())
-                input.close()
-        """
+            self.wfile.write(','.join(respon))
+            return
+
 def main():
     try:
         #blue_init()

@@ -58,6 +58,14 @@
       alert(xmlhttp.responseText);
     }
 
+    function getvar(){
+      var xmlhttp=new XMLHttpRequest();
+      xmlhttp.open("POST","/getavr",false);
+      xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+      xmlhttp.send("num=" + '3');
+      alert(xmlhttp.responseText);
+    }
+
     function step(){
       var xmlhttp = new XMLHttpRequest();
       xmlhttp.open("POST","/step",false);
@@ -66,8 +74,6 @@
       xmlhttp.send(" ");
       var stopid = xmlhttp.responseText;
       workspace.highlightBlock(stopid);
-	  alert(stopid);
-      //workspace.highlightBlock('6');
       workspace.getBlockById(stopid).select();
     }
 
@@ -93,7 +99,7 @@
     <tr>
       <button onclick="showCode()">code</button>
       <button onclick="download()">upload</button>
-      <button onclick="blue_connect()">connect</button>
+      <button onclick="getavr()">viewvar</button>
       <button onclick="step()">step</button>
     </tr>
     <tr>

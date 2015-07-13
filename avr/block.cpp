@@ -75,19 +75,19 @@ void block(char* id){
 
       //while( !Serial.available() );
       while( (para = Serial.read()) == -1 );
-      /* if no following comming byte, we simply treat
-       * it as transport error and ignore it. */
-      if (para == -1) {
-        Serial.write(HEAVY_LATENCY);
-        Serial.write(RESPON_END);
-        continue;
-      }
 
       switch(code){
         case GET_VAR:
-          char c;
-          c = (char)((*var_p[0]) & 0x000000ff);
-          Serial.write(c);
+          int num;
+		  num = (int)(para - 'a');
+          int i;
+          for(i = 0;i < num; ++i){
+            char c;
+            c = (char)((*var_p[i]) & 0xff00);
+            Serial.write(c);
+            c = (char)((*var_p[i]) & 0x00ff);
+            Serial.write(c);
+          }
           Serial.write(RESPON_END);
           /* write value of required variable to the serial */
           break;
