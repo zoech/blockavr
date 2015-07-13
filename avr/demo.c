@@ -1,6 +1,7 @@
 #define __BLOCK_DEBUG
 #include "def.h"
-int item = 0;
+int c = 0;
+int j = 0;
 int i = 0;
 
 
@@ -8,20 +9,42 @@ int main(void) {
 
   arduino_init();
 
-  var_p[0] = &item;
-  var_p[1] = &i;
+  var_p[0] = &c;
+  var_p[1] = &j;
+  var_p[2] = &i;
   debug_init(19200);
 
 
+  block("15");
+  avr_action_init();
+
+  block("18");
+  c = 1;
+
+  block("69");
+  j = 1;
+
   block("5");
   int count;
-  for (count = 0; count < 5; count++) {
+  for (count = 0; count < 10; count++) {
 
-    block("11");
-    item = item + 24;
+    block("28");
+    avr_action_forward( c );
 
-    block("23");
-    i = i - 17;
+    block("40");
+    avr_action_backward( c );
+
+    block("52");
+    avr_action_right( 90 );
+
+    block("62");
+    i = i + c;
+
+    block("102");
+    j = j * c;
+
+    block("138");
+    c = c + 1;
 
     block("5");
   }

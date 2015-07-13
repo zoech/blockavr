@@ -22,6 +22,7 @@
       width: 100%;
     }
     #blocklyArea {
+      width : 80%;
       height: 99%;
     }
   </style>
@@ -69,7 +70,8 @@
       for(var c = 0; c < num; c++){
         text += Blockly.C.variables_[c] + "\t\t= " + varlist[c] + "\n";
       }
-      alert(text);
+      //alert(text);
+      return text;
     }
 
     function step(){
@@ -79,8 +81,15 @@
       //xmlhttp.send("code=" + encodeURIComponent(code));
       xmlhttp.send(" ");
       var stopid = xmlhttp.responseText;
+      if(stopid == "END"){
+      alert("program END!");
+      return;
+      }
       workspace.highlightBlock(stopid);
       workspace.getBlockById(stopid).select();
+
+      varlist = document.getElementById('varlist');
+      varlist.innerHTML = getvar();
     }
 
     function up(){
@@ -105,12 +114,12 @@
     <tr>
       <button onclick="showCode()">code</button>
       <button onclick="download()">upload</button>
-      <button onclick="getvar()">viewvar</button>
+      <!--button onclick="getvar()">viewvar</button-->
       <button onclick="step()">step</button>
     </tr>
     <tr>
-      <td id="blocklyArea">
-      </td>
+      <td id="blocklyArea"></td>
+      <td><pre id="varlist"> variable list </pre></td>
     </tr>
   </table>
 

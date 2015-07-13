@@ -1,7 +1,8 @@
 Blockly.C = new Blockly.Generator('C');
 
 Blockly.C.RESERVED_WORDS_ =
-    'auto,const,double,float,int,short,struct,unsigned,break,continue,else,for,long,signed,switch,void,case,default,enum,goto,register,sizeof,typedef,volatile,char,do,extern,if,return,static,union,while,asm,dynamic_cast,namespace,reinterpret_cast,try,bool,explicit,new,static_cast,typeid,catch,false,operator,template,typename,class,friend,private,this,using,const_cast,inline,public,throw,virtual,delete,mutable,protected,true,wchar_t';
+    'auto,const,double,float,int,short,struct,unsigned,break,continue,else,for,long,signed,switch,void,case,default,enum,goto,register,sizeof,typedef,volatile,char,do,extern,if,return,static,union,while,asm,dynamic_cast,namespace,reinterpret_cast,try,bool,explicit,new,static_cast,typeid,catch,false,operator,template,typename,class,friend,private,this,using,const_cast,inline,public,throw,virtual,delete,mutable,protected,true,wchar_t,' + 
+    'var_p,initVariant,arduino_init,debug_init,block,avr_action_init,avr_action_forward,avr_action_backward,avr_action_left,avr_action_right,avr_action_blink,delay,Serial';
 
 Blockly.C.ORDER_ATOMIC = 0;
 Blockly.C.ORDER_MEMBER = 1;                   // -> []

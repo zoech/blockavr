@@ -42,7 +42,7 @@ void avr_action_forward(int dist){
   AVR_ACTION_RMT_F;
   AVR_ACTION_LMT_U;
   AVR_ACTION_RMT_U;
-  action_delay(dist*100);
+  delay(dist*100);
   AVR_ACTION_LMT_D;
   AVR_ACTION_RMT_D;
 }
@@ -52,7 +52,7 @@ void avr_action_backward(int dist){
   AVR_ACTION_RMT_B;
   AVR_ACTION_LMT_U;
   AVR_ACTION_RMT_U;
-  action_delay(dist*100);
+  delay(dist*100);
   AVR_ACTION_LMT_D;
   AVR_ACTION_RMT_D;
 }
@@ -62,7 +62,7 @@ void avr_action_left(int deg){
   AVR_ACTION_RMT_F;
   AVR_ACTION_LMT_U;
   AVR_ACTION_RMT_U;
-  action_delay(deg*50);
+  delay(deg*5);
   AVR_ACTION_LMT_D;
   AVR_ACTION_RMT_D;
 }
@@ -72,7 +72,7 @@ void avr_action_right(int deg){
   AVR_ACTION_RMT_B;
   AVR_ACTION_LMT_U;
   AVR_ACTION_RMT_U;
-  action_delay(deg*50);
+  delay(deg*5);
   AVR_ACTION_LMT_D;
   AVR_ACTION_RMT_D;
 }
