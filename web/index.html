@@ -88,8 +88,10 @@
       workspace.highlightBlock(stopid);
       workspace.getBlockById(stopid).select();
 
-      varlist = document.getElementById('varlist');
-      varlist.innerHTML = getvar();
+      if(Blockly.C.variables_.length != 0){
+        varlist = document.getElementById('varlist');
+        varlist.innerHTML = getvar();
+      }
     }
 
     function up(){
