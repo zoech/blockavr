@@ -89,7 +89,7 @@ def read_respon():
 def read_var(count):
     recv = '';
     while len(recv) < count*2 + 1:
-        recv = recv + seri_file.read()
+        recv = recv + seri_file.readline()
     return recv[:-1]
 
 class MyHandler(BaseHTTPRequestHandler):
